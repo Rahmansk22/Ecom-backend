@@ -1,0 +1,81 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+spring:
+  application:
+    name: ecomm-backend
+  batch:
+    jdbc:
+      initialize-schema: always
+
+  # Database configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5433/ecomm_db
+    username: ecomm_user
+    password: ecomm_password
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      connection-timeout: 20000
+
+  # JPA & Hibernate
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update # Automatically creates tables from entities in dev mode
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+
+  # Redis Configuration
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000ms
+
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: ecomm-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  # Mail Configuration
+  mail:
+    host: localhost
+    port: 1025 # Mailpit / Mailhog default SMTP port
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+# Custom Security Properties (JWT)
+security:
+  jwt:
+    # 256-bit HS256 secret key: eWNvbW1lcmNlLW11bHRpLXNlbGxlci1lbnRlcnByaXNlLWtleS0yNTYtYml0LXM=
+    secret: eWNvbW1lcmNlLW11bHRpLXNlbGxlci1lbnRlcnByaXNlLWtleS0yNTYtYml0LXM=
+    access-token-expiration-ms: 86400000 # 24 hours
+    refresh-token-expiration-ms: 2592000000 # 30 days
+
+# Logging configuration
+logging:
+  level:
+    root: INFO
+    com.ecommerce.platform: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
