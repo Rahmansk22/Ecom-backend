@@ -19,18 +19,19 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        String[] allowedOrigins = {
+        String[] allowedOriginPatterns = {
                 "http://localhost:5173",
                 "http://127.0.0.1:5173",
                 "http://localhost:3000",
-                "http://127.0.0.1:3000"
+                "http://127.0.0.1:3000",
+                "https://*.vercel.app"
         };
 
         registry.addEndpoint("/ws-notifications")
-                .setAllowedOrigins(allowedOrigins)
+                .setAllowedOriginPatterns(allowedOriginPatterns)
                 .withSockJS();
 
         registry.addEndpoint("/ws-notifications")
-                .setAllowedOrigins(allowedOrigins);
+                .setAllowedOriginPatterns(allowedOriginPatterns);
     }
 }
