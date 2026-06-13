@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
-@Service
+// @Service
 public class KafkaConsumerService {
 
     private static final Logger log = LoggerFactory.getLogger(KafkaConsumerService.class);
@@ -35,10 +35,10 @@ public class KafkaConsumerService {
         this.objectMapper = objectMapper;
     }
 
-    @KafkaListener(topics = "ecomm-events", groupId = "ecomm-group")
+    // @KafkaListener(topics = "ecomm-events", groupId = "ecomm-group")
     @Transactional
     public void consume(String message) {
-        log.info("Received Kafka Event: {}", message);
+        log.info("Received Event (Manual/Ignored): {}", message);
         try {
             Map<String, String> eventData = objectMapper.readValue(message, Map.class);
             String email = eventData.get("email");
